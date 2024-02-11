@@ -28,23 +28,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.marsphotos.R
+import com.example.marsphotos.network.MarsPhoto
 import com.example.marsphotos.ui.theme.MarsPhotosTheme
 
 @Composable
 fun HomeScreen(
     marsUiState: MarsUiState,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     when (marsUiState) {
-        is MarsUiState.Success -> ResultScreen(
-            marsUiState.photos, modifier = modifier.fillMaxWidth()
-        )
+        is MarsUiState.Success -> MarsPhotoCard(photo = marsUiState.photos, modifier = modifier)
         is MarsUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
         is MarsUiState.Error -> ErrorScreen( modifier = modifier.fillMaxSize())
     }
@@ -86,6 +88,24 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
         
         Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
     }
+}
+
+@Composable
+fun MarsPhotoCard(
+    photo: MarsPhoto,
+    modifier: Modifier = Modifier,
+) {
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(photo.imgSrc)
+            .crossfade(true)
+            .build(),
+        contentDescription = stringResource(R.string.mars_photo),
+        contentScale = ContentScale.Crop,
+        error = painterResource(R.drawable.ic_broken_image),
+        placeholder = painterResource(R.drawable.loading_img),
+        modifier = modifier.fillMaxWidth()
+    )
 }
 
 @Preview(showBackground = true)

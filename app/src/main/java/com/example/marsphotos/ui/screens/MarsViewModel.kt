@@ -27,9 +27,10 @@ import com.example.marsphotos.data.MarsPhotoRepository
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import com.example.marsphotos.MarsPhotoApplication
+import com.example.marsphotos.network.MarsPhoto
 
 sealed interface MarsUiState {
-    data class Success(val photos: String) : MarsUiState
+    data class Success(val photos: MarsPhoto) : MarsUiState
     object Error : MarsUiState
     object Loading : MarsUiState
 }
@@ -53,11 +54,7 @@ class MarsViewModel(private val marsPhotoRepository: MarsPhotoRepository) : View
     private fun getMarsPhotos() {
         viewModelScope.launch {
             marsUiState = try {
-                val listResult = marsPhotoRepository.getPhotos()
-                
-                MarsUiState.Success(
-                    "Success: ${listResult.size} Mars photos retrieved"
-                )
+                MarsUiState.Success(marsPhotoRepository.getPhotos()[0])
             } catch (e: Exception) {
                 MarsUiState.Error
             }
