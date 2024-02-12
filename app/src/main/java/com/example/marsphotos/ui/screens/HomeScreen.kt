@@ -17,7 +17,6 @@ package com.example.marsphotos.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
@@ -27,6 +26,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,10 +45,6 @@ import coil.request.ImageRequest
 import com.example.marsphotos.R
 import com.example.marsphotos.network.MarsPhoto
 import com.example.marsphotos.ui.theme.MarsPhotosTheme
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 
 @Composable
 fun HomeScreen(
@@ -58,19 +57,6 @@ fun HomeScreen(
         is MarsUiState.Success -> PhotosGridScreen(marsUiState.photos, modifier)
         is MarsUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
         is MarsUiState.Error -> ErrorScreen( modifier = modifier.fillMaxSize(), retryAction = retryAction)
-    }
-}
-
-/**
- * ResultScreen displaying number of photos retrieved.
- */
-@Composable
-fun ResultScreen(photos: String, modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-    ) {
-        Text(text = photos)
     }
 }
 
