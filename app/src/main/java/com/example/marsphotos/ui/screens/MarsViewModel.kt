@@ -30,7 +30,7 @@ import com.example.marsphotos.MarsPhotoApplication
 import com.example.marsphotos.network.MarsPhoto
 
 sealed interface MarsUiState {
-    data class Success(val photos: MarsPhoto) : MarsUiState
+    data class Success(val photos: List<MarsPhoto>) : MarsUiState
     object Error : MarsUiState
     object Loading : MarsUiState
 }
@@ -54,7 +54,7 @@ class MarsViewModel(private val marsPhotoRepository: MarsPhotoRepository) : View
     private fun getMarsPhotos() {
         viewModelScope.launch {
             marsUiState = try {
-                MarsUiState.Success(marsPhotoRepository.getPhotos()[0])
+                MarsUiState.Success(marsPhotoRepository.getPhotos())
             } catch (e: Exception) {
                 MarsUiState.Error
             }
