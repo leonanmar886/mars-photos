@@ -51,7 +51,7 @@ class MarsViewModel(private val marsPhotoRepository: MarsPhotoRepository) : View
      * Gets Mars photos information from the Mars API Retrofit service and updates the
      * [MarsPhoto] [List] [MutableList].
      */
-    private fun getMarsPhotos() {
+    fun getMarsPhotos() {
         viewModelScope.launch {
             marsUiState = try {
                 MarsUiState.Success(marsPhotoRepository.getPhotos())
